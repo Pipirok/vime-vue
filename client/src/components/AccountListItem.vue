@@ -26,14 +26,7 @@ export default {
   },
   methods: {
     removeAcc() {
-      this.$buefy.dialog.confirm({
-        type: "is-danger",
-        title: `Delete account ${this.acc.login} ?`,
-        message: `Warning: if you delete account ${this.acc.login}, it will be gone from the list. You can always add it again, though.`,
-        onConfirm: () => {
-          this.$store.dispatch("removeAcc", this.acc.login);
-        },
-      });
+      this.$store.dispatch("removeAcc", this.acc.login);
     },
   },
 };

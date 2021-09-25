@@ -28,6 +28,6 @@ export default {
 
 <style>
 .navbar-menu {
-  background: #552fbc;
+  background: #552fbc !important;
 }
 </style>

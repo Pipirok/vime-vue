@@ -1,22 +1,25 @@
 <template>
   <main-layout>
-    <div class="tile is-ancestor">
-      <h2 class="is-size-2">Add</h2>
-      <hr />
-      <p class="is-size-5">
-        Enter account name below, click add, view information about the account
-        and choose whether to add it or not
-      </p>
+    <div class="tile">
+      <div class="tile is-parent">
+        <form-add-account></form-add-account>
+      </div>
+      <div class="tile is-parent">
+        <form-remove-account></form-remove-account>
+      </div>
     </div>
   </main-layout>
 </template>
 
 <script>
+import FormAddAccount from "../components/FormAddAccount.vue";
+import FormRemoveAccount from "../components/FormRemoveAccount.vue";
 import MainLayout from "../components/MainLayout.vue";
 export default {
-  components: { MainLayout },
+  components: { MainLayout, FormRemoveAccount, FormAddAccount },
   name: "Manage",
 };
+FormAddAccount;
 </script>
 
 <style></style>

@@ -88,7 +88,9 @@ export default {
       let randomAcc =
         this.accsToShow[Math.floor(Math.random() * this.accsToShow.length)];
       this.$buefy.dialog.alert(
-        `Your random account: ${randomAcc.login} (lvl ${randomAcc.level})`
+        `Your random account: ${randomAcc.login} ${
+          randomAcc.level !== -1 ? `(lvl ${randomAcc.level})` : "(unregistered)"
+        }`
       );
     },
   },
