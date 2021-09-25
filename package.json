@@ -1,0 +1,23 @@
+{
+  "name": "fullvue",
+  "version": "1.0.0",
+  "description": "Full-stack vue test app",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon",
+    "client": "cd client && npm run serve",
+    "dev": "concurrently \"npm run server\" \"npm run serve\""
+  },
+  "author": "Pipirok",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.0.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "nodemon": "^2.0.12",
+    "prisma": "^3.0.2"
+  },
+  "type": "module"
+}
