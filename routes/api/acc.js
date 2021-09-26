@@ -12,10 +12,11 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.get("/add/:login", async (req, res) => {
+router.get("/add/:login/:level", async (req, res) => {
   try {
     let login = req.params.login;
-    if (!login) throw Error("Please provide a login");
+    let level = parseInt(req.params.level) || -1;
+    if (!login) throw Error({ message: "Please provide a login" });
 
     login = login.replace(/[^A-Za-z0-9_]/g, "");
     if (login.length < 3)
@@ -23,28 +24,30 @@ router.get("/add/:login", async (req, res) => {
     if (login.length > 16)
       throw Error("Login can't be longer than 16 characters");
 
+    if (level < -1) level = -1;
+
     let addedAcc = await prisma.vime_accs.create({
       data: {
         login,
-        level: Math.floor(Math.random() * 100 + 1),
+        level,
       },
     });
 
     res.json({ error: false, addedAcc });
   } catch (e) {
-    res.json({ error: true, message: JSON.stringify(e) });
+    res.status(400).json({ error: true, message: JSON.stringify(e) });
   }
 });
 
-router.delete("/delete/:login", async (req, res) => {
+router.delete("/remove/:login", async (req, res) => {
   try {
     let login = req.params.login.replace(/[^A-Za-z0-9_]/g, "");
-    const deletedAcc = await prisma.vime_accs.delete({
+    const removedAcc = await prisma.vime_accs.delete({
       where: { login },
     });
-    if (!deletedAcc) throw Error("Acc doesn't exist");
+    if (!removedAcc) throw Error("Acc doesn't exist");
 
-    res.json({ error: false, deletedAcc });
+    res.json({ error: false, removedAcc });
   } catch (e) {
     res.status(403).json({ error: true, message: JSON.stringify(e) });
   }

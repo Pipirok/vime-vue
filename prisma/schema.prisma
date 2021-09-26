@@ -8,7 +8,7 @@ datasource db {
 }
 
 model vime_accs {
-  id    Int    @id @default(autoincrement())
-  login String @unique @db.VarChar(25)
-  level Int?   @default(-1)
+  id    Int     @id @default(autoincrement())
+  login String? @unique @db.VarChar(25)
+  level Int?    @default(-1)
 }

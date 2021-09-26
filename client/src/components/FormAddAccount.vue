@@ -52,7 +52,7 @@ export default {
         .get(`https://api.vimeworld.ru/user/name/${this.loginToAdd}`)
         .then((response) => response.data)
         .then((accInfo) => {
-          if (accInfo.length >= 0) {
+          if (accInfo.length > 0) {
             this.$buefy.dialog.confirm({
               title: `Add ${accInfo[0].username} ?`,
               message: `Do you want to add ${accInfo[0].username} which is on level ${accInfo[0].level} ?`,
