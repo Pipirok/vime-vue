@@ -20,7 +20,7 @@ const routes = [
  * Tried using history mode, but it raised errors after deployment.
  */
 const router = new VueRouter({
-  mode: "hash",
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
