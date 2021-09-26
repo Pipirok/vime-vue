@@ -61,6 +61,8 @@ export default {
                   login: accInfo[0].username,
                   level: accInfo[0].level,
                 });
+                // Cleanup
+                this.loginToAdd = "";
               },
             });
           } else {
@@ -72,13 +74,11 @@ export default {
                   login: this.loginToAdd,
                   level: -1,
                 });
+                // Cleanup
+                this.loginToAdd = "";
               },
             });
           }
-        })
-        .then(() => {
-          // Cleanup
-          this.loginToAdd = "";
         });
     },
   },

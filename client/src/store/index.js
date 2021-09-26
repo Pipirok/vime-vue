@@ -81,7 +81,6 @@ export default new Vuex.Store({
         let data = await axios
           .get(`/api/acc/add/${acc.login}/${acc.level}`)
           .then((res) => res.data);
-        console.log(data);
         if (data.error) {
           Dialog.alert({
             essage: `Something went wrong: ${data.message}.
@@ -89,7 +88,6 @@ export default new Vuex.Store({
             type: "is-danger",
           });
         } else {
-          console.log(data.addedAcc);
           commit("addAcc", data.addedAcc);
           window.localStorage.setItem("accs", JSON.stringify(state.accs));
           Dialog.alert({
