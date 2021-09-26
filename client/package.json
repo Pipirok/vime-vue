@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build-app": "npm install && npm run build"
   },
   "dependencies": {
     "@mdi/font": "^6.1.95",
@@ -33,6 +34,5 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  },
-  "proxy": "localhost:5000"
+  }
 }

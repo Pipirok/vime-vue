@@ -4,9 +4,11 @@
   "description": "Full-stack vue test app",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "server": "nodemon",
     "client": "cd client && npm run serve",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm install && cd client && npm run build-app"
   },
   "author": "Pipirok",
   "license": "ISC",
