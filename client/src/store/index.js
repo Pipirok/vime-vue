@@ -4,7 +4,8 @@ import Vuex from "vuex";
 import axios from "axios";
 import { DialogProgrammatic as Dialog } from "buefy";
 
-axios.defaults.baseURL = "http://localhost:5000";
+// Not needed in production
+// axios.defaults.baseURL = "http://localhost:5000";
 
 Vue.use(Vuex);
 
