@@ -8,7 +8,8 @@
     "server": "nodemon",
     "client": "cd client && npm run serve",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install && cd client && npm run build-app"
+    "build": "npm install && cd client && npm run build-app",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build-app --prefix client"
   },
   "author": "Pipirok",
   "license": "ISC",
