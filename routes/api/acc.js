@@ -68,24 +68,34 @@ router.get("/recache", async (req, res) => {
 
       if (existingAcc.login.toLowerCase() === fetchedAcc.login.toLowerCase()) {
         updatedAllAccs.push({
+          id: existingAcc.id,
           login: fetchedAcc.login,
           level: fetchedAcc.level,
         });
         fetchedAccsIndex++;
       } else {
         updatedAllAccs.push({
+          id: existingAcc.id,
           login: existingAcc.login,
           level: existingAcc.level,
         });
       }
     });
 
-    // Will update acounts asynchroniously in the background, no need to wait for it to finish
-    updatedAllAccs.forEach((acc) => {
-      prisma.vime_accs.update({ where: { login: acc.login }, data: acc });
-    });
+    // Will update acounts and send them to the client only once they are updated
+    for (let i = 0; i < updatedAllAccs.length; i++) {
+      await prisma.vime_accs.update({
+        where: { id: updatedAllAccs[i].id },
+        data: updatedAllAccs[i],
+      });
+    }
 
-    res.json({ error: false, updatedAllAccs });
+    res.json({
+      error: false,
+      updatedAllAccs: updatedAllAccs.sort(
+        (acc1, acc2) => acc2.level - acc1.level
+      ),
+    });
   } catch (e) {
     res.status(500).json({ error: true, message: JSON.stringify(e) });
   }
