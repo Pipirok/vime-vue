@@ -2,7 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import axios from "axios";
-import { DialogProgrammatic as Dialog } from "buefy";
+import {
+  DialogProgrammatic as Dialog,
+  LoadingProgrammatic as Loading,
+} from "buefy";
 
 // Not needed in production
 // axios.defaults.baseURL = "http://localhost:5000";
@@ -20,7 +23,7 @@ export default new Vuex.Store({
     removeAcc(state, login) {
       state.accs = state.accs.filter((acc) => acc.login !== login);
     },
-    hydrate(state, accs) {
+    updateAll(state, accs) {
       state.accs = accs;
     },
   },
@@ -106,7 +109,25 @@ export default new Vuex.Store({
           type: "is-danger",
         });
       } else {
-        commit("hydrate", data.accs);
+        commit("updateAll", data.accs);
+      }
+    },
+    async recache({ commit }) {
+      let loading = Loading.open();
+      let data = await axios.get("/api/acc/recache").then((res) => res.data);
+      loading.close();
+      if (data.error) {
+        Dialog.alert({
+          message: `Something went wrong: ${data.message}.
+            Check your internet connection (u MaTb)`,
+          type: "is-danger",
+        });
+      } else {
+        commit("updateAll", data.updatedAllAccs);
+        Dialog.alert({
+          message: `Accounts recached successfully! Updated ${data.updatedAllAccs.length} accs`,
+          type: "is-success",
+        });
       }
     },
   },

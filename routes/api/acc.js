@@ -1,4 +1,5 @@
 import express from "express";
+import nfetch from "node-fetch";
 import { prisma } from "../../lib/prisma.js";
 
 const router = express.Router();
@@ -36,6 +37,57 @@ router.get("/add/:login/:level", async (req, res) => {
     res.json({ error: false, addedAcc });
   } catch (e) {
     res.status(400).json({ error: true, message: JSON.stringify(e) });
+  }
+});
+
+router.get("/recache", async (req, res) => {
+  try {
+    let allAccs = await prisma.vime_accs.findMany();
+    let fetchedAccs = [];
+
+    // This was the only way I found to quickly do C-style division (i.e. without the decimal part)
+    for (let i = 0; i <= parseInt(allAccs.length / 50); i++) {
+      let joinedAccs = allAccs
+        .slice(i * 50, (i + 1) * 50)
+        .map((acc) => acc.login)
+        .join(",");
+      await nfetch(`http://api.vimeworld.ru/user/name/${joinedAccs}`)
+        .then((data) => data.json())
+        .then((responseFromVime) =>
+          responseFromVime.forEach((acc) => {
+            fetchedAccs.push({ login: acc.username, level: acc.level });
+          })
+        );
+    }
+
+    let fetchedAccsIndex = 0;
+    let updatedAllAccs = [];
+
+    allAccs.forEach((existingAcc, i) => {
+      let fetchedAcc = fetchedAccs[fetchedAccsIndex] || { login: "" }; // Dummy value to prevent Out-of-bounds errors
+
+      if (existingAcc.login.toLowerCase() === fetchedAcc.login.toLowerCase()) {
+        updatedAllAccs.push({
+          login: fetchedAcc.login,
+          level: fetchedAcc.level,
+        });
+        fetchedAccsIndex++;
+      } else {
+        updatedAllAccs.push({
+          login: existingAcc.login,
+          level: existingAcc.level,
+        });
+      }
+    });
+
+    // Will update acounts asynchroniously in the background, no need to wait for it to finish
+    updatedAllAccs.forEach((acc) => {
+      prisma.vime_accs.update({ where: { login: acc.login }, data: acc });
+    });
+
+    res.json({ error: false, updatedAllAccs });
+  } catch (e) {
+    res.status(500).json({ error: true, message: JSON.stringify(e) });
   }
 });
 
